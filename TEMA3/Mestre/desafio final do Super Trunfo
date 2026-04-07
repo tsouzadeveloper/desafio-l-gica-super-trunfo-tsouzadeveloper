@@ -1,0 +1,149 @@
+#include <stdio.h>
+
+/*
+Simplificações para o nível Mestre
+• Usando as cartas pré-cadastradas dos desafios anteriores. 
+• Foco na integração do menus dinâmicos com switch, 
+    comparações com if-else (e aninhamentos), operador ternário, 
+    cálculo da soma dos atributos e tratamento de empates.*/
+
+int main() {
+    
+    // CADASTRO DAS CARTAS (Reutilizando lógica dos níveis anteriores)
+    // Carta 1
+    
+    char nomePais1[50] = "Brasil";
+    unsigned long int populacao1 = 12325232;
+    float area1 = 1521.11;
+    float pib1 = 699.28;
+    int pontos1 = 50;
+    float densidade1 = populacao1 / area1;
+    float pib_per_capita1 = (pib1 * 1000000000) / populacao1;
+
+    // Carta 2
+    
+    char nomePais2[50] = "Chile";
+    unsigned long int populacao2 = 6747815;
+    float area2 = 1200.25;
+    float pib2 = 354.10;
+    int pontos2 = 35;
+    float densidade2 = populacao2 / area2;
+    float pib_per_capita2 = (pib2 * 1000000000) / populacao2;
+
+    // Variáveis para a lógica de escolha
+    int opcao1, opcao2;
+    float valor1_c1, valor1_c2, valor2_c1, valor2_c2;
+    char nomeAtributo1[30], nomeAtributo2[30];
+
+    printf("\n--- SUPER TRUNFO: Tema 3 DESAFIO MESTRE ---\n\n");
+
+    // --- MENU 1 (Escolha do primeiro atributo) ---
+    printf("\nEscolha o primeiro atributo\n");
+    printf(" 1. Populacao\n");
+    printf(" 2. Area\n");
+    printf(" 3. PIB\n");
+    printf(" 4. Pontos Turisticos\n");
+    printf(" 5. Densidade Demografica\n");
+    
+    printf("Escolha: ");
+    scanf("%d", &opcao1);
+
+    switch (opcao1) {
+    
+    case 1: 
+        valor1_c1 = (float)populacao1; 
+        valor1_c2 = (float)populacao2; 
+        sprintf(nomeAtributo1, "Populacao"); 
+        break;
+    case 2: 
+        valor1_c1 = area1; valor1_c2 = area2; 
+        sprintf(nomeAtributo1, "Area");  
+        break;
+    case 3: 
+        valor1_c1 = pib1; valor1_c2 = pib2; 
+        sprintf(nomeAtributo1, "PIB"); 
+        break;
+    case 4: 
+        valor1_c1 = (float)pontos1; 
+        valor1_c2 = (float)pontos2; 
+        sprintf(nomeAtributo1, "Pontos Turisticos"); 
+        break;
+    case 5:    
+        valor1_c1 = densidade1; 
+        valor1_c2 = densidade2; 
+        sprintf(nomeAtributo1, "Densidade"); 
+        break;
+    default: 
+        printf("Opcao invalida!\n"); 
+        
+        return 0;
+    }
+
+    // --- MENU 2 DINÂMICO (Regra: não mostrar o atributo já escolhido)
+    printf("\nEscolha o segundo atributo:\n");
+    if (opcao1 != 1) printf("1. Populacao\n");
+    if (opcao1 != 2) printf("2. Area\n");
+    if (opcao1 != 3) printf("3. PIB\n");
+    if (opcao1 != 4) printf("4. Pontos Turisticos\n");
+    if (opcao1 != 5) printf("5. Densidade Demografica\n");
+    printf("Escolha: ");
+    scanf("%d", &opcao2);
+
+    if (opcao1 == opcao2) {
+    // --- Tratamento de entrada inválida
+        printf("Erro: Voce nao pode escolher o mesmo atributo duas vezes!\n");
+        return 0;
+    }
+
+    switch (opcao2) {
+
+    case 1:
+        valor2_c1 = (float)populacao1; 
+        valor2_c2 = (float)populacao2; 
+        sprintf(nomeAtributo2, "Populacao"); 
+        break;
+    case 2: 
+        valor2_c1 = area1; 
+        valor2_c2 = area2; sprintf(nomeAtributo2, "Area");
+        break;
+    case 3: 
+        valor2_c1 = pib1; valor2_c2 = pib2; sprintf(nomeAtributo2, "PIB"); 
+        break;
+    case 4: 
+        valor2_c1 = (float)pontos1; 
+        valor2_c2 = (float)pontos2; 
+        sprintf(nomeAtributo2, "Pontos Turisticos"); 
+        break;
+    case 5: 
+        valor2_c1 = densidade1;  
+        valor2_c2 = densidade2; 
+        sprintf(nomeAtributo2, "Densidade"); 
+        break;
+    default: 
+        printf("Opcao invalida!\n"); 
+    
+    return 0;
+    }
+
+    // --- LÓGICA DE COMPARAÇÃO COM OPERADOR TERNÁRIO ---
+    // Vence o maior valor, exceto Densidade (onde vence o menor)
+    int resultado1 = (opcao1 == 5) ? (valor1_c1 < valor1_c2) : (valor1_c1 > valor1_c2);
+    int resultado2 = (opcao2 == 5) ? (valor2_c1 < valor2_c2) : (valor2_c1 > valor2_c2);
+
+    // Soma dos atributos para definir o vencedor final
+    float somaC1 = valor1_c1 + valor2_c1;
+    float somaC2 = valor1_c2 + valor2_c2;
+
+    // --- EXIBIÇÃO DOS RESULTADOS ---
+    printf("\n--- RESULTADO DA RODADA ---\n");
+    printf("Carta 1 (%s): %s = %.2f, %s = %.2f | Soma = %.2f\n", nomePais1, nomeAtributo1, valor1_c1, nomeAtributo2, valor2_c1, somaC1);
+    printf("Carta 2 (%s): %s = %.2f, %s = %.2f | Soma = %.2f\n", nomePais2, nomeAtributo1, valor1_c2, nomeAtributo2, valor2_c2, somaC2);
+
+    // Verificação de vencedor final usando operadores ternários encadeados
+    printf("\nVEREDITO: ");
+    (somaC1 > somaC2) ? printf("Carta 1 (%s) venceu!\n", nomePais1) :
+    (somaC2 > somaC1) ? printf("Carta 2 (%s) venceu!\n", nomePais2) :
+    printf("Empate!\n");
+
+    return 0;
+}
